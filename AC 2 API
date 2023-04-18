@@ -1,0 +1,59 @@
+rom flask import Flask, jsonify, make_response
+
+chuteiras = [
+    {
+      'marca':'nike',
+      'nome':'hypervenom preta'
+    },
+    {
+      'marca':'nike',
+      'nome':'mercurial branca'
+    },
+    {
+      'marca':'nike',
+      'nome':'tiempo laranja'
+    },
+    {
+      'marca':'adidas',
+      'nome':'predator vermelha'
+    },
+    {
+      'marca':'adidas',
+      'nome':'x speed portal cinza'
+    },
+    {
+      'marca':'puma',
+      'nome':'future play verde'
+    },
+    {
+      'marca':'puma',
+      'nome':'future z azul'
+    }
+]
+
+app = Flask(__name__)
+
+@app.route('/', methods=['GET'])
+def index():
+    return 'Olá, você pode acessar a URI de /buscas/ e encontrar os itens que podem ser consultados', 200
+
+@app.route('/busca', methods=['GET'])
+def search():
+    return 'Utilize /chuteiras para verificar as chuteiras disponíveis. Você pode também filtra-lás por marca', 200
+
+@app.route('/busca/chuteiras', methods=['GET'])
+def showall():
+    return jsonify(chuteiras), 200
+
+@app.route('/busca/chuteiras/<string:marca>', methods=['GET'])
+def searchbootbrand(marca):
+    list = []
+
+    for chuteira in chuteiras:
+        if chuteira.get('marca') == marca:
+            list.append(chuteira)
+
+    return jsonify(list), 200
+
+if __name__ == '__main__':
+    app.run(port=5000, debug=True)
